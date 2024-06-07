@@ -40,6 +40,14 @@ public class Ticket {
         this.price = price;
     }
 
+    public String getID() {
+        return ID;
+    }
+
+    public StadiumSector getStadiumSector() {
+        return stadiumSector;
+    }
+
     public long getTime() {
         return time;
     }
