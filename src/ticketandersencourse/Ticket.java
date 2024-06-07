@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 public class Ticket {
-    private String ID;
+    private String ID = "none";
     private String concertHall;
     private int eventCode;
     private long time;
@@ -15,7 +15,6 @@ public class Ticket {
     private BigDecimal price;
 
     public Ticket() {
-        this.ID = null;
         this.concertHall = null;
         this.eventCode = 0;
         this.time = Instant.now().getEpochSecond();
