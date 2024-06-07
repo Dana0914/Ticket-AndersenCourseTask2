@@ -20,6 +20,14 @@ public class TicketService {
         TicketService.ticketList = ticketList;
     }
 
+    public static String getTicketById(String ID) {
+        for (Ticket ticket : ticketList) {
+            if (ticket.getID().equals(ID)) {
+                return ticket.getID();
+            }
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         List<Ticket> tickets = new ArrayList<>();
@@ -44,7 +52,7 @@ public class TicketService {
         Ticket limited = new Ticket("Filadelfia", 455, Instant.now().getEpochSecond());
         System.out.println(limited);
 
-
+        System.out.println(getTicketById("4893"));
 
 
     }
