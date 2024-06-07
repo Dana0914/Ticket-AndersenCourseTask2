@@ -32,6 +32,11 @@ public class TicketService {
         tickets.add(ticket);
     }
 
+    public void createTicket(Ticket ticket) {
+        capacityChecker();
+        tickets.add(ticket);
+    }
+
     public String getStorageInfo() {
         StringBuilder stringBuilder = new StringBuilder();
 
