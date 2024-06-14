@@ -1,16 +1,22 @@
-package ticketandersencourse;
+package ticketandersencourse.model;
+
+import ticketandersencourse.enums.StadiumSector;
+import ticketandersencourse.interfaces.Printable;
+import ticketandersencourse.interfaces.Shareable;
+import ticketandersencourse.validation.Validator;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
-public class Ticket {
+public class Ticket implements Shareable, Printable {
     private String ID;
     private String concertHall;
     private int eventCode;
-    private long time;
+    public long time;
     private boolean isPromo;
-    private StadiumSector stadiumSector;
+    public StadiumSector stadiumSector;
     private double backpackWeight;
     private BigDecimal price;
 
@@ -57,6 +63,46 @@ public class Ticket {
     }
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public int getEventCode() {
+        return eventCode;
+    }
+
+    public String getConcertHall() {
+        return concertHall;
+    }
+
+    public double getBackpackWeight() {
+        return backpackWeight;
+    }
+
+    public void getTicketValues(List<Ticket> ticket) {
+        for (Ticket t : ticket) {
+            System.out.println(t.getID() + " " +
+                    t.getConcertHall() + " " +
+                    t.getEventCode() + " " +
+                    t.getTime() + " " +
+                    t.getStadiumSector() + " " +
+                    t.isPromo() + " " +
+                    t.getBackpackWeight() + " " +
+                    t.getPrice());
+        }
+    }
+
+    @Override
+    public void sharedByPhone(String phone) {
+        System.out.println(phone);
+    }
+
+    @Override
+    public void sharedByEmail(String email) {
+        System.out.println(email);
+    }
+
+    @Override
+    public void print() {
+        System.out.println(this);
     }
 
     @Override
