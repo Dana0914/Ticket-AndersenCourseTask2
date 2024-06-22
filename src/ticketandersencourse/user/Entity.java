@@ -1,19 +1,14 @@
 package ticketandersencourse.user;
 
-import ticketandersencourse.enums.Role;
-import ticketandersencourse.interfaces.Printable;
-import ticketandersencourse.interfaces.RolePrint;
 import ticketandersencourse.validation.Validator;
 
-import java.util.Objects;
 
-public class User implements Printable, RolePrint {
+public abstract class Entity {
     private int id;
-    public User(int id) {
+    public Entity(int id) {
         this.id = new Validator().getValidatedId(id);
     }
-    public User() {
-
+    public Entity() {
     }
 
     public int getId() {
@@ -24,33 +19,4 @@ public class User implements Printable, RolePrint {
         this.id = new Validator().getValidatedId(id);
     }
 
-    @Override
-    public void print() {
-        System.out.println(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                '}';
-    }
-
-    @Override
-    public Role printRole() {
-        return Role.valueOf("default");
-    }
 }
