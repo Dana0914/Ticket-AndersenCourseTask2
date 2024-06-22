@@ -1,4 +1,4 @@
-package ticketandersencourse;
+package ticketandersencourse.validation;
 
 public class Validator {
 
@@ -8,6 +8,12 @@ public class Validator {
             throw new IllegalArgumentException("No more than 4 digits or chars");
         }
         return ID;
+    }
+    public int getValidatedId(int id) {
+        if (id < 1000 || id > 9999) {
+            throw new IllegalArgumentException("No more than 4 digits");
+        }
+        return id;
     }
     public String getValidatedConcertHall(String concertHall) {
         if (concertHall.length() > 10) {
@@ -21,6 +27,12 @@ public class Validator {
             throw new IllegalArgumentException("No more than 3 digits");
         }
         return eventCode;
+    }
+    public char getValidatedSector(char sector) {
+        if (sector < 'A' || sector > 'C') {
+            throw new IllegalArgumentException("Invalid sector");
+        }
+        return sector;
     }
 
 }
