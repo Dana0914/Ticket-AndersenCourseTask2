@@ -1,13 +1,10 @@
 package ticketandersencourse.user;
 
 import ticketandersencourse.enums.Role;
-import ticketandersencourse.model.Ticket;
+import ticketandersencourse.interfaces.Printable;
+import ticketandersencourse.interfaces.RolePrint;
 
-public class Client extends User {
-    public Client(int id) {
-        super(id);
-
-    }
+public class Client implements RolePrint, Printable {
     public Client() {
 
     }
@@ -17,8 +14,13 @@ public class Client extends User {
         return Role.Client;
     }
 
-    public void getTicket(Ticket ticket) {
-        System.out.println("Ticket is received " + ticket);
+    public void getTicket() {
+        System.out.println("Ticket is received");
     }
+    @Override
+    public void print() {
+        System.out.println("Overrided implementation of print() method for Client class");
+    }
+
 
 }
