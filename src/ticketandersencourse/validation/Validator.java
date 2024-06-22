@@ -28,5 +28,11 @@ public class Validator {
         }
         return eventCode;
     }
+    public char getValidatedSector(char sector) {
+        if (sector < 'A' || sector > 'C') {
+            throw new IllegalArgumentException("Invalid sector");
+        }
+        return sector;
+    }
 
 }
