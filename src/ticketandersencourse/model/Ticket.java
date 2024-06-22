@@ -1,22 +1,26 @@
 package ticketandersencourse.model;
 
-import ticketandersencourse.enums.StadiumSector;
+import annotation.NullableWarning;
 import ticketandersencourse.interfaces.Printable;
 import ticketandersencourse.interfaces.Shareable;
+import ticketandersencourse.user.Entity;
+import ticketandersencourse.validation.EmailValidator;
+import ticketandersencourse.validation.PhoneNumberValidator;
 import ticketandersencourse.validation.Validator;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-
-public class Ticket implements Shareable, Printable {
+public class Ticket extends Entity implements Shareable, Printable {
+    @NullableWarning()
     private String ID;
-    private String concertHall;
-    private int eventCode;
-    public long time;
+    private final String concertHall;
+    private final int eventCode;
+    private long time;
     private boolean isPromo;
-    public StadiumSector stadiumSector;
+    private char stadiumSector;
     private double backpackWeight;
     private BigDecimal price;
 
@@ -26,31 +30,39 @@ public class Ticket implements Shareable, Printable {
         this.eventCode = 0;
         this.time = Instant.now().getEpochSecond();
         this.isPromo = false;
-        this.stadiumSector = null;
+        this.stadiumSector = 0;
+        processNullableWarningAnnotation();
+
+
     }
+
     public Ticket(String concertHall, int eventCode, long time) {
         this.concertHall = new Validator().getValidatedConcertHall(concertHall);
         this.eventCode = new Validator().getValidatedEventCode(eventCode);
         this.time = time;
+        processNullableWarningAnnotation();
     }
 
     public Ticket(String ID, String concertHall, int eventCode, long time, boolean
-            isPromo, StadiumSector stadiumSector, double backpackWeight, BigDecimal price) {
+            isPromo, char stadiumSector, double backpackWeight, BigDecimal price, int id)  {
+        super(id);
         this.ID = new Validator().getValidatedId(ID);
         this.concertHall = new Validator().getValidatedConcertHall(concertHall);
         this.eventCode = new Validator().getValidatedEventCode(eventCode);
         this.time = time;
         this.isPromo = isPromo;
-        this.stadiumSector = stadiumSector;
+        this.stadiumSector = new Validator().getValidatedSector(stadiumSector);
         this.backpackWeight = backpackWeight;
         this.price = price;
+        processNullableWarningAnnotation();
+
     }
 
     public String getID() {
         return ID;
     }
 
-    public StadiumSector getStadiumSector() {
+    public char getStadiumSector() {
         return stadiumSector;
     }
 
@@ -61,6 +73,7 @@ public class Ticket implements Shareable, Printable {
     public boolean isPromo() {
         return isPromo;
     }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -75,6 +88,14 @@ public class Ticket implements Shareable, Printable {
 
     public double getBackpackWeight() {
         return backpackWeight;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public void setStadiumSector(char stadiumSector) {
+        this.stadiumSector = new Validator().getValidatedSector(stadiumSector);
     }
 
     public void getTicketValues(List<Ticket> ticket) {
@@ -92,17 +113,17 @@ public class Ticket implements Shareable, Printable {
 
     @Override
     public void sharedByPhone(String phone) {
-        System.out.println(phone);
+        System.out.println(new PhoneNumberValidator().getValidPhoneNumber(phone));
     }
 
     @Override
     public void sharedByEmail(String email) {
-        System.out.println(email);
+        System.out.println(new EmailValidator().getValid(email));
     }
 
     @Override
     public void print() {
-        System.out.println(this);
+        System.out.println("Overrided implementation of print() method for Ticket class");
     }
 
     @Override
@@ -117,12 +138,13 @@ public class Ticket implements Shareable, Printable {
                 && Objects.equals(ID, ticket.ID)
                 && Objects.equals(concertHall, ticket.concertHall)
                 && stadiumSector == ticket.stadiumSector
-                && Objects.equals(price, ticket.price);
+                && Objects.equals(price, ticket.price)
+                && Objects.equals(super.getId(), ticket.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, concertHall, eventCode, time, isPromo, stadiumSector, backpackWeight, price);
+        return Objects.hash(ID, concertHall, eventCode, time, isPromo, stadiumSector, backpackWeight, price, super.getId());
     }
 
     @Override
@@ -130,6 +152,7 @@ public class Ticket implements Shareable, Printable {
         String promo = isPromo() ? "promo" : "not promo";
         return "Ticket{" +
                 "ID='" + ID + '\'' +
+                "id='" + super.getId() + '\'' +
                 ", concertHall='" + concertHall + '\'' +
                 ", eventCode=" + eventCode +
                 ", time=" + time +
@@ -138,5 +161,17 @@ public class Ticket implements Shareable, Printable {
                 ", backpackWeight=" + backpackWeight +
                 ", price=" + price +
                 '}';
+    }
+
+    public void processNullableWarningAnnotation() {
+        try {
+            Class<Ticket> clazz = Ticket.class;
+            Field field = clazz.getDeclaredField("ID");
+            if (field.isAnnotationPresent(NullableWarning.class) && field.get(this) == null) {
+                System.out.println("Variable " + field.getName() + " is null in " + this.getClass());
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("Could not access the field " + e.getMessage());
+        }
     }
 }
