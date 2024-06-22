@@ -2,11 +2,12 @@ package ticketandersencourse.user;
 
 import ticketandersencourse.enums.Role;
 import ticketandersencourse.interfaces.Printable;
+import ticketandersencourse.interfaces.RolePrint;
 import ticketandersencourse.validation.Validator;
 
 import java.util.Objects;
 
-public abstract class User implements Printable {
+public class User implements Printable, RolePrint {
     private int id;
     public User(int id) {
         this.id = new Validator().getValidatedId(id);
@@ -22,7 +23,6 @@ public abstract class User implements Printable {
     public void setId(int id) {
         this.id = new Validator().getValidatedId(id);
     }
-    public abstract Role printRole();
 
     @Override
     public void print() {
@@ -47,5 +47,10 @@ public abstract class User implements Printable {
         return "User{" +
                 "id=" + id +
                 '}';
+    }
+
+    @Override
+    public Role printRole() {
+        return Role.valueOf("default");
     }
 }
